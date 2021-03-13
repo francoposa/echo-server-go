@@ -34,5 +34,5 @@ docker.push:
 	docker push $(DOCKER_FULL_IMAGE_NAME)
 
 docker.run:
-	docker run -p 8080:8080 $(DOCKER_FULL_IMAGE_NAME) --config config.docker.yaml
+	docker run -p 8080:8080 $(DOCKER_FULL_IMAGE_NAME)
 
