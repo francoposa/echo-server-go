@@ -28,7 +28,8 @@ var serverCmd = &cobra.Command{
 		router.Use(middleware.Logger)
 		router.Use(middleware.Recoverer)
 
-		router.HandleFunc("/", server.Echo)
+		router.HandleFunc("/health", server.Health)
+		router.HandleFunc("/echo", server.Echo)
 
 		host := viper.GetString("server.host")
 		port := viper.GetString("server.port")
