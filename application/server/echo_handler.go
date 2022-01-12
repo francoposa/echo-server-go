@@ -13,7 +13,7 @@ func Echo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	body :=  map[string]interface{} {}
+	body := map[string]interface{}{}
 	body["Method"] = r.Method
 	body["Protocol"] = r.Proto
 	body["Headers"] = r.Header
@@ -21,6 +21,10 @@ func Echo(w http.ResponseWriter, r *http.Request) {
 	body["Body"] = string(requestBody)
 
 	prettyJSONBody, _ := json.MarshalIndent(body, "", "    ")
-	w.Write(prettyJSONBody)
+	_, err = w.Write(prettyJSONBody)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
 }
-
