@@ -29,10 +29,10 @@ func run(cmd *cobra.Command, args []string) {
 	router.HandleFunc("/health", server.Health)
 	router.HandleFunc("/echo", server.Echo)
 
-	host := viper.GetString(serverHostFlag)
-	port := viper.GetString(serverPortFlag)
-	readTimeout := viper.GetInt(serverTimeOutReadFlag)
-	writeTimeout := viper.GetInt(serverTimeOutWriteFlag)
+	host := viper.GetString(srvHostFlag)
+	port := viper.GetString(srvPortFlag)
+	readTimeout := viper.GetInt(srvTimeOutReadFlag)
+	writeTimeout := viper.GetInt(srvTimeOutWriteFlag)
 
 	srv := &http.Server{
 		Handler:      router,
@@ -45,37 +45,27 @@ func run(cmd *cobra.Command, args []string) {
 	log.Fatal(srv.ListenAndServe())
 }
 
-const serverHostFlag = "server.host"
-const serverPortFlag = "server.port"
-const serverTimeOutReadFlag = "server.timeout.read"
-const serverTimeOutWriteFlag = "server.timetout.write"
+const (
+	srvHostFlag         = "server.host"
+	srvPortFlag         = "server.port"
+	srvTimeOutReadFlag  = "server.timeout.read"
+	srvTimeOutWriteFlag = "server.timeout.write"
+)
 
 func init() {
 	rootCmd.AddCommand(serverCmd)
 
 	cmdFlags := serverCmd.Flags()
 
-	cmdFlags.String(serverHostFlag, "", "")
-	//nolint:ineffassign,staticcheck
-	err := viper.BindPFlag(serverHostFlag, cmdFlags.Lookup(serverHostFlag))
+	cmdFlags.String(srvHostFlag, "", "")
+	_ = viper.BindPFlag(srvHostFlag, cmdFlags.Lookup(srvHostFlag))
 
-	cmdFlags.String(serverPortFlag, "", "")
-	//nolint:ineffassign,staticcheck
-	err = viper.BindPFlag(serverPortFlag, cmdFlags.Lookup(serverPortFlag))
+	cmdFlags.String(srvPortFlag, "", "")
+	_ = viper.BindPFlag(srvPortFlag, cmdFlags.Lookup(srvPortFlag))
 
-	cmdFlags.String(serverTimeOutReadFlag, "", "")
-	//nolint:ineffassign,staticcheck
-	err = viper.BindPFlag(
-		serverTimeOutReadFlag, cmdFlags.Lookup(serverTimeOutReadFlag),
-	)
+	cmdFlags.String(srvTimeOutReadFlag, "", "")
+	_ = viper.BindPFlag(srvTimeOutReadFlag, cmdFlags.Lookup(srvTimeOutReadFlag))
 
-	cmdFlags.String(serverTimeOutWriteFlag, "", "")
-	//nolint:ineffassign,staticcheck
-	err = viper.BindPFlag(
-		serverTimeOutWriteFlag, cmdFlags.Lookup(serverTimeOutWriteFlag),
-	)
-	if err != nil {
-		log.Panic(err)
-	}
-
+	cmdFlags.String(srvTimeOutWriteFlag, "", "")
+	_ = viper.BindPFlag(srvTimeOutWriteFlag, cmdFlags.Lookup(srvTimeOutWriteFlag))
 }

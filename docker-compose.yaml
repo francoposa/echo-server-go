@@ -1,0 +1,24 @@
+version: '3.4'
+services:
+  echo-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: server-run
+    container_name: echo-server
+    ports:
+      - 8080:8080
+
+  echo-server-debug:
+    build:
+      context: .
+      dockerfile: Dockerfile.debug
+      target: server-debug
+    container_name: echo-server-debug
+    ports:
+      - 8080:8080
+      - 40000:40000
+    security_opt:
+      - "seccomp:unconfined"
+    cap_add:
+      - SYS_PTRACE

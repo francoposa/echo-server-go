@@ -20,11 +20,17 @@ func Echo(w http.ResponseWriter, r *http.Request) {
 	body["RemoteAddress"] = r.RemoteAddr
 	body["Body"] = string(requestBody)
 
-	prettyJSONBody, _ := json.MarshalIndent(body, "", "    ")
+	prettyJSONBody, err := json.MarshalIndent(body, "", "    ")
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	_, err = w.Write(prettyJSONBody)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+
 	w.WriteHeader(http.StatusOK)
 }

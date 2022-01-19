@@ -1,9 +1,7 @@
 ---
 server:
-  host:
+  host: 0.0.0.0
   port: 8080
   timeout:
-    server: 30
-    read: 15
-    write: 10
-    idle: 5
+    read: 60
+    write: 60

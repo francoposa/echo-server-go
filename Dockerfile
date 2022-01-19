@@ -1,14 +1,14 @@
-FROM golang:alpine as builder
+FROM golang:alpine as builder-run
 RUN mkdir /build
 ADD . /build/
 WORKDIR /build
 RUN go build -o echo-server .
 
-FROM alpine
+FROM alpine as server-run
 RUN adduser -S -D -H -h /app appuser
 USER appuser
-COPY --from=builder /build/echo-server /app/
-COPY --from=builder /build/config.docker.yaml /app/
-COPY --from=builder /build/scripts/ /app/scripts/
+COPY --from=builder-run /build/echo-server /app/
+COPY --from=builder-run /build/config.docker.yaml /app/config.yaml
+COPY --from=builder-run /build/scripts/ /app/scripts/
 WORKDIR /app
-ENTRYPOINT ["/app/scripts/run-server.sh"]
+CMD ["./echo-server", "server"]
