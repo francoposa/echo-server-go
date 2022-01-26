@@ -7,12 +7,12 @@ WORKDIR /build
 RUN go build -gcflags="all=-N -l"  -o echo-server .
 
 FROM golang:alpine as server-debug
-RUN apk add gcc g++
-RUN go install github.com/go-delve/delve/cmd/dlv@latest
 RUN adduser -S -D -H -h /app appuser
 USER appuser
 COPY --from=builder-debug /build/echo-server /app/
 COPY --from=builder-debug /build/config.docker.yaml /app/config.yaml
 COPY --from=builder-debug /build/scripts/ /app/scripts/
+# golang image already has /go/bin directory created and in PATH
+COPY --from=builder-debug /go/bin/dlv /go/bin/dlv
 WORKDIR /app
 CMD [ "dlv", "--listen=:40000", "--headless=true", "--api-version=2", "--accept-multiclient", "exec", "./echo-server", "server"]
