@@ -14,11 +14,11 @@ func Echo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	body := map[string]interface{}{}
-	body["Method"] = r.Method
-	body["Protocol"] = r.Proto
-	body["Headers"] = r.Header
-	body["RemoteAddress"] = r.RemoteAddr
-	body["Body"] = string(requestBody)
+	body["method"] = r.Method
+	body["protocol"] = r.Proto
+	body["headers"] = r.Header
+	body["remote_address"] = r.RemoteAddr
+	body["body"] = string(requestBody)
 
 	prettyJSONBody, err := json.MarshalIndent(body, "", "    ")
 	if err != nil {
