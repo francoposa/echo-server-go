@@ -1,14 +1,29 @@
-FROM golang:alpine as builder-run
-RUN mkdir /build
-ADD . /build/
-WORKDIR /build
-RUN go build -o echo-server .
+# golang:version is the latest debian builder image
+FROM golang:latest AS builder
 
-FROM alpine as server-run
-RUN adduser -S -D -H -h /app appuser
+# mount only the needed files
+RUN mkdir /build
+COPY ./src /build/src
+COPY go.mod /build
+WORKDIR /build
+
+# build
+RUN go build -v -o dist/echo-server  ./src/cmd/server
+
+# end of builder stage
+
+# final container stage
+FROM debian:12.2
+
+# copy only the built binary
+COPY --from=builder /build/dist/echo-server /bin/echo-server
+
+RUN groupadd appuser \
+  && useradd --gid appuser --shell /bin/bash --create-home appuser
+
 USER appuser
-COPY --from=builder-run /build/echo-server /app/
-COPY --from=builder-run /build/config.docker.yaml /app/config.yaml
-COPY --from=builder-run /build/scripts/ /app/scripts/
-WORKDIR /app
-CMD ["./echo-server", "server"]
+
+# EXPOSE no longer has any actual functionality,
+# but serves as documentation for exposed ports
+EXPOSE 8080
+CMD ["echo-server"]

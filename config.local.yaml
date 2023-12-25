@@ -1,7 +1,0 @@
----
-server:
-  host: localhost
-  port: 8080
-  timeout:
-    read: 60
-    write: 60
