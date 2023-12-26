@@ -1,5 +1,3 @@
-LABEL org.opencontainers.image.source = "https://github.com/francoposa/echo-server-go"
-
 # golang:version is the latest debian builder image
 FROM golang:latest AS builder
 
@@ -16,6 +14,8 @@ RUN go build -v -o dist/echo-server  ./src/cmd/server
 
 # final container stage
 FROM debian:12.2
+
+LABEL org.opencontainers.image.source = "https://github.com/francoposa/echo-server-go"
 
 # copy only the built binary
 COPY --from=builder /build/dist/echo-server /bin/echo-server
