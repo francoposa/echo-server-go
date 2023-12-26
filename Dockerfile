@@ -1,3 +1,5 @@
+LABEL org.opencontainers.image.source = "https://github.com/francoposa/echo-server-go"
+
 # golang:version is the latest debian builder image
 FROM golang:latest AS builder
 
