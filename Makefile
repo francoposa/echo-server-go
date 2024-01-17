@@ -1,3 +1,6 @@
+# git version --dirty tag ensures we don't override an image tag built from a clean state
+# with an image tag built from a "dirty" state with uncommitted changes.
+# we should be able to use git to see the repo in the exact state the container was built from.
 GIT_VERSION ?= $(shell git describe --abbrev=8 --tags --always --dirty)
 IMAGE_PREFIX ?= ghcr.io/francoposa/echo-server-go/echo-server
 SERVICE_NAME ?= echo-server
@@ -19,8 +22,10 @@ local.run:
 	go run ./src/cmd/server/main.go
 
 .PHONY: docker.build
-docker.build:  # image gets tagged as latest by default
+docker.build:
+	# image gets tagged as latest by default
 	docker build -t $(IMAGE_PREFIX)/$(SERVICE_NAME) -f ./Dockerfile .
+	# tag with git version as well
 	docker tag $(IMAGE_PREFIX)/$(SERVICE_NAME) $(IMAGE_PREFIX)/$(SERVICE_NAME):$(GIT_VERSION)
 
 .PHONY: docker.run
