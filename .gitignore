@@ -1,3 +1,9 @@
+# compiled artifacts
+**/dist/*
+
+# editors
 **/.idea/*
 **/.vscode/*
+
+# filesystem artifacts
 **/.DS_Store
