@@ -3,12 +3,12 @@ FROM golang:latest AS builder
 
 # mount only the needed files
 RUN mkdir /build
-COPY ./src /build/src
+COPY server /build/server
 COPY go.mod /build
 WORKDIR /build
 
 # build
-RUN go build -v -o dist/echo-server  ./src/cmd/server
+RUN go build -v -o dist/echo-server  ./server/cmd/server
 
 # end of builder stage
 

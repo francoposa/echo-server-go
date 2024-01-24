@@ -24,7 +24,7 @@ local.run:
 .PHONY: docker.build
 docker.build:
 	# image gets tagged as latest by default
-	docker build -t $(IMAGE_PREFIX)/$(SERVICE_NAME) -f ./Dockerfile .
+	docker build -t $(IMAGE_PREFIX)/$(SERVICE_NAME) -f ./server/Dockerfile .
 	# tag with git version as well
 	docker tag $(IMAGE_PREFIX)/$(SERVICE_NAME) $(IMAGE_PREFIX)/$(SERVICE_NAME):$(GIT_VERSION)
 
