@@ -11,7 +11,7 @@ clean:
 
 .PHONY: local.build
 local.build: clean
-	go build -o dist/echo-server ./src/cmd/server
+	go build -o dist/echo-server ./server/cmd/server
 
 .PHONY: local.test
 local.test:
@@ -19,7 +19,7 @@ local.test:
 
 .PHONY: local.run
 local.run:
-	go run ./src/cmd/server/main.go
+	go run ./server/cmd/server/main.go
 
 .PHONY: docker.build
 docker.build:
